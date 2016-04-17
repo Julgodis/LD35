@@ -1,6 +1,6 @@
 ﻿@font-face {
     font-family: "pixel_font";
-    src: url("http://julgodis.github.io/LD35/resources/pixel_font.TTF");
+    src: url("resources/pixel_font.ttf");
     font-style: normal;
     -webkit-font-smoothing: none;
 }
@@ -11,4 +11,13 @@ body {
 
 span {
     font-style: italic;
+}
+
+canvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 640px;
 }
