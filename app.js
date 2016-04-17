@@ -1,100 +1,87 @@
-﻿/*
+/*
 
     
 
 
 */
-
-var engine: Engine;
-var loading: boolean = true;
-
-var batch2d: SpriteBatch
-var billboard_batch: BillboardBatch
-
-var projection_matrix: mat4
-var view_matrix: mat4
-var screen_x_offset: number = 0;
-
-var scene: Scene;
-
+var engine;
+var loading = true;
+var batch2d;
+var billboard_batch;
+var projection_matrix;
+var view_matrix;
+var screen_x_offset = 0;
+var scene;
 // NOTE: resources
-var basic_3d_shader_resource: ShaderResource;
-var billboard_3d_shader_resource: ShaderResource;
-var tilemap_texture_resource: TextureResource;
-var player_texture_resource: TextureResource;
-var player_texture_2_resource: TextureResource;
-var son_texture_resource: TextureResource;
-var enemy_texture_resources: TextureResource[];
-var itemmap_texture_resource: TextureResource;
-var particle_texture_basic_resource: TextureResource;
-var chat_bubble_1_texture_resource: TextureResource;
-var chat_bubble_2_texture_resource: TextureResource;
-var tree_texture_1_resource: TextureResource;
-var tree_texture_2_resource: TextureResource;
-var bush_texture_1_resource: TextureResource;
-var sandhill_texture_1_resource: TextureResource;
-var inventory_base_texture_resource: TextureResource;
-var inventory_select_texture_resource: TextureResource;
-var boss_canon_texture_resource: TextureResource;
-var map_texture_resource: TextureResource;
-var push_block_texture_resource: TextureResource;
-
-var big_boss_texture_resources: TextureResource[];
-
+var basic_3d_shader_resource;
+var billboard_3d_shader_resource;
+var tilemap_texture_resource;
+var player_texture_resource;
+var player_texture_2_resource;
+var son_texture_resource;
+var enemy_texture_resources;
+var itemmap_texture_resource;
+var particle_texture_basic_resource;
+var chat_bubble_1_texture_resource;
+var chat_bubble_2_texture_resource;
+var tree_texture_1_resource;
+var tree_texture_2_resource;
+var bush_texture_1_resource;
+var sandhill_texture_1_resource;
+var inventory_base_texture_resource;
+var inventory_select_texture_resource;
+var boss_canon_texture_resource;
+var map_texture_resource;
+var push_block_texture_resource;
+var big_boss_texture_resources;
 // 
-var basic_3d_shader: Shader;
-var billboard_3d_shader: Shader;
-var tilemap_texture: Texture;
-var player_texture: Texture;
-var player_texture_2: Texture;
-var son_texture: Texture;
-var enemy_texture: Texture[];
-var itemmap_texture: Texture;
-var particle_texture_basic: Texture;
-var chat_bubble_1_texture: Texture;
-var chat_bubble_2_texture: Texture;
-var tree_texture_1: Texture;
-var tree_texture_2: Texture;
-var bush_texture_1: Texture;
-var sandhill_texture_1: Texture;
-var inventory_base_texture: Texture;
-var inventory_select_texture: Texture;
-var boss_canon_texture: Texture;
-var map_texture: Texture;
-var push_block_texture: Texture;
-
-var big_boss_texture: Texture[];
-
+var basic_3d_shader;
+var billboard_3d_shader;
+var tilemap_texture;
+var player_texture;
+var player_texture_2;
+var son_texture;
+var enemy_texture;
+var itemmap_texture;
+var particle_texture_basic;
+var chat_bubble_1_texture;
+var chat_bubble_2_texture;
+var tree_texture_1;
+var tree_texture_2;
+var bush_texture_1;
+var sandhill_texture_1;
+var inventory_base_texture;
+var inventory_select_texture;
+var boss_canon_texture;
+var map_texture;
+var push_block_texture;
+var big_boss_texture;
 //
-var music_resource: MusicResource;
-var explosion_sound_resource: SoundResource;
-var hurt_sound_resource: SoundResource;
-var inspect_sound_resource: SoundResource;
-var laser_sound_resource: SoundResource;
-var pickup_sound_resource: SoundResource;
-var shift_sound_resource: SoundResource;
-var wall_hit_sound_resource: SoundResource;
-var select_sound_resource: SoundResource;
-
+var music_resource;
+var explosion_sound_resource;
+var hurt_sound_resource;
+var inspect_sound_resource;
+var laser_sound_resource;
+var pickup_sound_resource;
+var shift_sound_resource;
+var wall_hit_sound_resource;
+var select_sound_resource;
 //
-var music: Music;
-var explosion_sound: Sound;
-var hurt_sound: Sound;
-var inspect_sound: Sound;
-var laser_sound: Sound;
-var pickup_sound: Sound;
-var shift_sound: Sound;
-var wall_hit_sound: Sound;
-var select_sound: Sound;
-
-window.onload = () => {
+var music;
+var explosion_sound;
+var hurt_sound;
+var inspect_sound;
+var laser_sound;
+var pickup_sound;
+var shift_sound;
+var wall_hit_sound;
+var select_sound;
+window.onload = function () {
     engine = new Engine(640, 480);
     engine.do_update = update_base;
     engine.do_render = render_base;
-
     batch2d = new SpriteBatch(engine, 4 * 256);
     engine.run();
-
     basic_3d_shader_resource = Loader.ReadShaderResource(engine, "resources/basic_3d_shader");
     billboard_3d_shader_resource = Loader.ReadShaderResource(engine, "resources/billboard_3d_shader");
     tilemap_texture_resource = Loader.ReadTextureResource(engine, "resources/tilemap_texture.png", { pixelate: true });
@@ -114,17 +101,14 @@ window.onload = () => {
     boss_canon_texture_resource = Loader.ReadTextureResource(engine, "resources/boss_canon_bullet.png", { pixelate: true });
     map_texture_resource = Loader.ReadTextureResource(engine, "resources/map_1.bmp", { pixelate: true });
     push_block_texture_resource = Loader.ReadTextureResource(engine, "resources/push_block.png", { pixelate: true });
-
     enemy_texture_resources = [];
     enemy_texture_resources[0] = Loader.ReadTextureResource(engine, "resources/enemy_1.png", { pixelate: true });
     enemy_texture_resources[1] = Loader.ReadTextureResource(engine, "resources/enemy_2.png", { pixelate: true });
     enemy_texture_resources[2] = Loader.ReadTextureResource(engine, "resources/enemy_3.png", { pixelate: true });
-
     big_boss_texture_resources = [];
     big_boss_texture_resources[0] = Loader.ReadTextureResource(engine, "resources/big_boss_state_1.png", { pixelate: true });
     big_boss_texture_resources[1] = Loader.ReadTextureResource(engine, "resources/big_boss_state_2.png", { pixelate: true });
     big_boss_texture_resources[2] = Loader.ReadTextureResource(engine, "resources/big_boss_state_3.png", { pixelate: true });
-
     music_resource = Loader.ReadMusicResource("resources/music.ogg", { loop: true });
     explosion_sound_resource = Loader.ReadSoundResource("resources/explosion.ogg", 5);
     hurt_sound_resource = Loader.ReadSoundResource("resources/hurt.ogg", 15);
@@ -134,19 +118,16 @@ window.onload = () => {
     shift_sound_resource = Loader.ReadSoundResource("resources/shift.ogg", 4);
     wall_hit_sound_resource = Loader.ReadSoundResource("resources/wall_hit.ogg", 30);
     select_sound_resource = Loader.ReadSoundResource("resources/select.ogg", 10);
-
-    var wait_for_resources = setInterval(() => {
+    var wait_for_resources = setInterval(function () {
         if (Loader.Loaded) {
             clearInterval(wait_for_resources);
             loaded();
         }
     }, 100);
 };
-
 function loaded() {
     basic_3d_shader = basic_3d_shader_resource.shader;
     billboard_3d_shader = billboard_3d_shader_resource.shader;
-
     tilemap_texture = tilemap_texture_resource.texture;
     itemmap_texture = itemmap_texture_resource.texture;
     player_texture = player_texture_resource.texture;
@@ -164,17 +145,14 @@ function loaded() {
     boss_canon_texture = boss_canon_texture_resource.texture;
     map_texture = map_texture_resource.texture;
     push_block_texture = push_block_texture_resource.texture;
-
     enemy_texture = [];
     for (var i in enemy_texture_resources) {
         enemy_texture[i] = enemy_texture_resources[i].texture;
     }
-
     big_boss_texture = [];
     for (var i in big_boss_texture_resources) {
         big_boss_texture[i] = big_boss_texture_resources[i].texture;
     }
-
     music = music_resource.music;
     explosion_sound = explosion_sound_resource.sound;
     hurt_sound = hurt_sound_resource.sound;
@@ -182,13 +160,10 @@ function loaded() {
     laser_sound = laser_sound_resource.sound;
     pickup_sound = pickup_sound_resource.sound;
     shift_sound = shift_sound_resource.sound;
-
     wall_hit_sound = wall_hit_sound_resource.sound;
     select_sound = select_sound_resource.sound;
-
     music.play();
     music.volume = 0.2;
-
     select_sound.volume = 0.1;
     wall_hit_sound.volume = 0.1;
     inspect_sound.volume = 0.1;
@@ -196,31 +171,26 @@ function loaded() {
     laser_sound.volume = 0.1;
     pickup_sound.volume = 0.1;
     shift_sound.volume = 0.05;
-
     billboard_batch = new BillboardBatch(engine, 4 * 1024);
-
     scene = new IntroScene(engine);
     loading = false;
 }
-
-function update_base(dt: number) {
-    if (loading) return;
-
+function update_base(dt) {
+    if (loading)
+        return;
     scene.update(engine.time, dt);
     _global_tweener.update(engine.time, dt);
 }
-
-function render_base(dt: number, update_between: boolean) {
-    if (loading) return;
-    
+function render_base(dt, update_between) {
+    if (loading)
+        return;
     scene.render(engine.time, engine.dt / 1000.0);
 }
-
 function OpenInNewTabWinBrowser(url) {
     var win = window.open(url, '_blank');
     win.focus();
 }
-
 function open_rate() {
     window.location.href = ("http://ludumdare.com/compo/ludum-dare-35/?action=preview&uid=16119");
 }
+//# sourceMappingURL=app.js.map
