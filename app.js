@@ -118,6 +118,7 @@ window.onload = function () {
     shift_sound_resource = Loader.ReadSoundResource("resources/shift.ogg", 4);
     wall_hit_sound_resource = Loader.ReadSoundResource("resources/wall_hit.ogg", 30);
     select_sound_resource = Loader.ReadSoundResource("resources/select.ogg", 10);
+    Loader.ReadFileResource("http://julgodis.github.io/LD35/resources/pixel_font.TTF"); // NOTE: Depend on the font
     var wait_for_resources = setInterval(function () {
         if (Loader.Loaded) {
             clearInterval(wait_for_resources);
