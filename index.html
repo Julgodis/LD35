@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>LudumDare #35 - Shapeshifting</title>
+    <link rel="stylesheet" href="app.css" type="text/css" />
+</head>
+<body style="font-family: pixel_font;">
+
+    <script id="2d-vertex-shader" type="x-shader/x-vertex">
+        precision mediump float;
+
+        attribute vec2 position;
+        attribute vec2 texture_coords;
+
+        uniform vec2 origin;
+        uniform vec2 resolution;
+
+        varying vec2 coords;
+
+        void main() {
+            coords = vec2(texture_coords.x, texture_coords.y);
+            vec2 render_position = (position - origin) * (2.0 / resolution);
+            vec2 co_position = vec2(render_position.x, -render_position.y);
+            gl_Position = vec4(co_position, 0.0, 1.0);
+        }
+    </script>
+
+    <script id="2d-fragment-shader" type="x-shader/x-fragment">
+        precision mediump float;
+
+        uniform sampler2D sampler0;
+        uniform vec2 origin;
+        uniform vec2 resolution;
+
+        varying vec2 coords;
+
+        void main() {
+        vec4 texel = texture2D(sampler0, coords);
+            gl_FragColor = texel;
+        }
+    </script>
+
+    <script src="engine/engine.js"></script>
+    <script src="engine/texture.js"></script>
+    <script src="engine/framebuffer.js"></script>
+    <script src="engine/text.js"></script>
+    <script src="engine/shader.js"></script>
+    <script src="engine/spritebatch.js"></script>
+    <script src="engine/modelbatch.js"></script>
+    <script src="engine/billboardbatch.js"></script>
+    <script src="engine/maths.js"></script>
+    <script src="engine/sound.js"></script>
+    <script src="engine/music.js"></script>
+    <script src="engine/resources.js"></script>
+    <script src="engine/mouse.js"></script>
+    <script src="engine/keyboard.js"></script>
+    <script src="engine/animation.js"></script>
+    <script src="engine/particle_system.js"></script>
+    <script src="engine/tween.js"></script>
+
+    <script src="game/gameobject.js"></script>
+    <script src="game/player.js"></script>
+    <script src="game/enemy.js"></script>
+    <script src="game/item.js"></script>
+    <script src="game/weapon.js"></script>
+    <script src="game/pushable.js"></script>
+    <script src="game/bullet.js"></script>
+    <script src="game/chat.js"></script>
+    <script src="game/world.js"></script>
+    <script src="game/tiles.js"></script>
+    <script src="game/scene.js"></script>
+
+    <script src="game/scenes/story.js"></script>
+    <script src="game/scenes/level1.js"></script>
+    <script src="game/scenes/win_scene.js"></script>
+    <script src="game/scenes/lose_scene.js"></script>
+    <script src="game/scenes/intro_scene.js"></script>
+
+</body>
+    <script src="app.js"></script>
+</html>
