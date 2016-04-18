@@ -339,7 +339,7 @@ class Story extends Scene implements StoryScene {
                 chat.text = "Ok so where is this \"Bob\"?";
                 this.add_chat_command(chat, this.world.player, function (command: ChatCommand) {
                     var chat = new ChatBubble(engine, new vec2([650, 0]));
-                    chat.text = "Controls:\n- Movement is done with arrow keys.\n- <X> is the your primary (attack / use)\n- <SPACE> Time shifter\n- <ENTER> Talking";
+                    chat.text = "Controls:\n- Movement is done with the arrow keys.\n- <X> Is the your primary skill (attack / use)\n- <SPACE> Time shifter\n- <ENTER> Talking";
                     chat.position = new vec3([1.4, 0, 0]);
                     this.add_chat_command(chat, this.world.player, function (command: ChatCommand) {
 
